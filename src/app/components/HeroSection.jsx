@@ -10,6 +10,8 @@ import {
   faGift,
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
+import useModalStore from "../store/useModalStore";
+import OrderModal from "./OrderModal";
 
 const FeatureTag = ({ icon, label, className }) => (
   <div
@@ -23,7 +25,10 @@ const FeatureTag = ({ icon, label, className }) => (
 );
 
 export default function HeroSection() {
+  const openModal = useModalStore((state) => state.openModal);
+
   return (
+    <>
     <section className="relative w-full overflow-hidden min-h-[520px] flex items-center">
 
       <div className="absolute inset-0">
@@ -81,7 +86,9 @@ export default function HeroSection() {
               </li>
             </ul>
 
-            <button className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-slate-900 font-black text-sm py-3 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-[1.02]">
+            <button
+              onClick={openModal}
+              className="mt-4 w-full flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-slate-900 font-black text-sm py-3 rounded-xl transition-all duration-200 shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-[1.02]">
               ĐẶT HÀNG NGAY
               <FontAwesomeIcon icon={faArrowRight} />
             </button>
@@ -154,5 +161,7 @@ export default function HeroSection() {
 
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
     </section>
+    <OrderModal />
+    </>
   );
 }
