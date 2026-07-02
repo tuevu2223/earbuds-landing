@@ -44,3 +44,8 @@ body {
   background: var(--theme-bg-main);
   color: var(--theme-text-body);
 }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 72px;
+}
