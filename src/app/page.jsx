@@ -4,6 +4,7 @@ import HeroSection from "./components/HeroSection";
 import TrustSection from "./components/sections/trust-section/TrustSection";
 import ProductIntroduction from "./components/sections/product-section/ProductIntroduction";
 import FeatureHighlights from "./components/sections/features-section/FeatureHighlights";
+import UsageGuide from "./components/sections/guide-section/UsageGuide";
 import PreOrderCTA from "./components/sections/cta-section/PreOrderCTA";
 
 export default function Home() {
@@ -19,7 +20,9 @@ export default function Home() {
         <div id="features">
           <FeatureHighlights />
         </div>
-        <div id="guide" />
+        <div id="guide">
+          <UsageGuide />
+        </div>
         <div id="reviews" />
       </div>
     </div>
