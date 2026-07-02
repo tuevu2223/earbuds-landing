@@ -2,6 +2,7 @@
 
 import HeroSection from "./components/HeroSection";
 import TrustSection from "./components/sections/trust-section/TrustSection";
+import ProductIntroduction from "./components/sections/product-section/ProductIntroduction";
 import PreOrderCTA from "./components/sections/cta-section/PreOrderCTA";
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
 
         <TrustSection />
         <PreOrderCTA />
+        <ProductIntroduction />
 
       </div>
     </div>

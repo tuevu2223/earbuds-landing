@@ -1,0 +1,133 @@
+import Image from "next/image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHeadphones,
+  faBolt,
+  faWifi,
+  faBatteryFull,
+  faVolumeHigh,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
+
+const highlights = [
+  {
+    icon: faHeadphones,
+    title: "Chống Ồn Chủ Động ANC",
+    description: "Công nghệ ANC thế hệ mới loại bỏ 99% tạp âm xung quanh, giúp bạn tập trung hoàn toàn vào âm nhạc.",
+  },
+  {
+    icon: faBatteryFull,
+    title: "Pin 40 Giờ Sử Dụng",
+    description: "Sạc nhanh 10 phút là có thể nghe nhạc 2 giờ đồng hồ. Đủ dùng cả tuần mà không cần lo sạc.",
+  },
+  {
+    icon: faWifi,
+    title: "Bluetooth 5.3 Ổn Định",
+    description: "Kết nối tức thì, phạm vi lên đến 10m. Hỗ trợ kết nối 2 thiết bị cùng lúc cực kỳ tiện lợi.",
+  },
+  {
+    icon: faVolumeHigh,
+    title: "Âm Thanh Hi-Fi 40mm",
+    description: "Driver 40mm cho bass sâu, treble trong trẻo. Mang đến trải nghiệm âm thanh như phòng thu chuyên nghiệp.",
+  },
+];
+
+const specs = [
+  { label: "Model", value: "Alpha Works Flex 680" },
+  { label: "Driver", value: "40mm Dynamic Driver" },
+  { label: "Tần số đáp ứng", value: "20Hz – 20kHz" },
+  { label: "Bluetooth", value: "5.3 / Phạm vi 10m" },
+  { label: "Pin", value: "40 giờ (ANC OFF)" },
+  { label: "Sạc", value: "USB-C, 10 phút = 2 giờ" },
+  { label: "Trọng lượng", value: "250g" },
+];
+
+export default function ProductIntroduction() {
+  return (
+    <section className="py-16">
+      <div className="text-center mb-12">
+        <span className="inline-block text-theme-accent text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+          Alpha Works Flex 680
+        </span>
+        <h2 className="text-3xl md:text-4xl font-black text-text-heading leading-tight">
+          Thiết Kế Cho Những Người
+          <span className="block text-theme-accent">Yêu Âm Nhạc Thực Sự</span>
+        </h2>
+        <p className="mt-4 text-text-body max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
+          Không chỉ là tai nghe — đây là người bạn đồng hành giúp bạn thoát khỏi thế giới ồn ào và đắm chìm hoàn toàn vào từng nốt nhạc.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="flex items-center justify-center">
+          <div className="relative bg-theme-box rounded-3xl p-8 shadow-xl border border-theme-accent/10 flex items-center justify-center w-full max-w-md">
+            <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-theme-accent/10 to-blue-100/50 blur-3xl -z-10" />
+
+            <Image
+              src="/images/1-241030043552.webp"
+              alt="Tai nghe không dây chống ồn Alpha Works Flex 680"
+              width={380}
+              height={380}
+              className="object-contain drop-shadow-2xl w-full h-auto"
+            />
+
+            <div className="absolute top-4 right-4 bg-theme-accent text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+              NEW 2024
+            </div>
+
+            <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-2xl px-3 py-2 shadow-md border border-theme-accent/10 flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0" />
+              <span className="text-text-heading text-xs font-semibold">Còn hàng — Giao ngay hôm nay</span>
+            </div>
+          </div>
+        </div>
+
+
+        <div className="flex flex-col gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {highlights.map((item, index) => (
+              <div
+                key={index}
+                className="bg-theme-box rounded-2xl p-5 shadow-md border border-theme-accent/10 flex flex-col gap-3 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <div className="w-10 h-10 rounded-xl bg-theme-accent-bg text-theme-accent flex items-center justify-center text-lg">
+                  <FontAwesomeIcon icon={item.icon} />
+                </div>
+                <div>
+                  <h3 className="text-text-heading font-bold text-sm mb-1">{item.title}</h3>
+                  <p className="text-text-body text-xs leading-relaxed">{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-theme-box rounded-2xl p-5 shadow-md border border-theme-accent/10">
+            <h3 className="text-text-heading font-bold text-sm uppercase tracking-wider mb-4 flex items-center gap-2">
+              <span className="w-1 h-4 bg-theme-accent rounded-full inline-block" />
+              Thông Số Kỹ Thuật
+            </h3>
+            <ul className="divide-y divide-slate-100 space-y-0">
+              {specs.map((spec, index) => (
+                <li key={index} className="flex justify-between items-center py-2.5 text-sm">
+                  <span className="text-text-body">{spec.label}</span>
+                  <span className="text-text-heading font-semibold">{spec.value}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex-1 flex flex-col gap-1.5">
+              {["Bảo hành 12 tháng chính hãng", "Đổi trả 7 ngày miễn phí", "Hỗ trợ kỹ thuật 24/7"].map((item, i) => (
+                <div key={i} className="flex items-center gap-2 text-sm text-text-body">
+                  <FontAwesomeIcon icon={faCheck} className="text-green-500 text-xs" />
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
