@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ScrollReveal from "../../ScrollReveal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeadphones,
@@ -45,31 +46,34 @@ const specs = [
 export default function ProductIntroduction() {
   return (
     <section className="py-16">
-      <div className="text-center mb-12">
-        <span className="inline-block text-theme-accent text-sm font-semibold uppercase tracking-[0.25em] mb-3">
-          Alpha Works Flex 680
-        </span>
-        <h2 className="text-3xl md:text-4xl font-black text-text-heading leading-tight">
-          Thiết Kế Cho Những Người
-          <span className="block text-theme-accent">Yêu Âm Nhạc Thực Sự</span>
-        </h2>
-        <p className="mt-4 text-text-body max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-          Không chỉ là tai nghe — đây là người bạn đồng hành giúp bạn thoát khỏi thế giới ồn ào và đắm chìm hoàn toàn vào từng nốt nhạc.
-        </p>
-      </div>
+      <ScrollReveal direction="up" delay={0.1}>
+        <div className="text-center mb-12">
+          <span className="inline-block text-theme-accent text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+            Alpha Works Flex 680
+          </span>
+          <h2 className="text-3xl md:text-4xl font-black text-text-heading leading-tight">
+            Thiết Kế Cho Những Người
+            <span className="block text-theme-accent">Yêu Âm Nhạc Thực Sự</span>
+          </h2>
+          <p className="mt-4 text-text-body max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
+            Không chỉ là tai nghe — đây là người bạn đồng hành giúp bạn thoát khỏi thế giới ồn ào và đắm chìm hoàn toàn vào từng nốt nhạc.
+          </p>
+        </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <div className="flex items-center justify-center">
-          <div className="relative bg-theme-box rounded-3xl p-8 shadow-xl border border-theme-accent/10 flex items-center justify-center w-full max-w-md">
+        <ScrollReveal direction="right" delay={0.2} className="flex items-center justify-center">
+          <div className="relative bg-theme-box rounded-3xl p-8 shadow-xl border border-theme-accent/10 flex items-center justify-center w-full max-w-md group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
             <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-theme-accent/10 to-blue-100/50 blur-3xl -z-10" />
 
-            <Image
-              src="/images/1-241030043552.webp"
-              alt="Tai nghe không dây chống ồn Alpha Works Flex 680"
-              width={380}
-              height={380}
-              className="object-contain drop-shadow-2xl w-full h-auto"
-            />
+            <div className="relative w-full aspect-square animate-pulse bg-slate-200 dark:bg-slate-800 rounded-3xl overflow-hidden group-hover:animate-none">
+              <Image
+                src="/images/1-241030043552.webp"
+                alt="Tai nghe không dây chống ồn Alpha Works Flex 680"
+                fill
+                className="object-cover drop-shadow-2xl transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
 
             <div className="absolute top-4 right-4 bg-theme-accent text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
               NEW 2024
@@ -80,10 +84,9 @@ export default function ProductIntroduction() {
               <span className="text-text-heading text-xs font-semibold">Còn hàng — Giao ngay hôm nay</span>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
-
-        <div className="flex flex-col gap-8">
+        <ScrollReveal direction="left" delay={0.3} className="flex flex-col gap-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {highlights.map((item, index) => (
               <div
@@ -126,7 +129,7 @@ export default function ProductIntroduction() {
               ))}
             </div>
           </div>
-        </div>
+        </ScrollReveal> 
       </div>
     </section>
   );

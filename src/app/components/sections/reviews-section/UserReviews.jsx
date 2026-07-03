@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faStarHalfStroke, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarEmpty } from "@fortawesome/free-regular-svg-icons";
+import ScrollReveal from "../../ScrollReveal";
 
 const reviews = [
   {
@@ -170,56 +171,61 @@ export default function UserReviews() {
 
   return (
     <section>
-      <div className="text-center mb-12">
-        <span className="inline-block text-theme-accent text-sm font-semibold uppercase tracking-[0.25em] mb-3">
-          Đánh Giá
-        </span>
-        <h2 className="text-3xl md:text-4xl font-black text-text-heading leading-tight">
-          Khách Hàng Nói Gì
-          <span className="block text-theme-accent">Về Alpha Works?</span>
-        </h2>
-        <p className="mt-4 text-text-body max-w-xl mx-auto text-sm md:text-base">
-          Hơn 180 đánh giá thực tế từ những người đã tin tưởng lựa chọn Alpha Works Flex 680.
-        </p>
-      </div>
+      <ScrollReveal direction="up" delay={0.1}>
+        <div className="text-center mb-12">
+          <span className="inline-block text-theme-accent text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+            Đánh Giá
+          </span>
+          <h2 className="text-3xl md:text-4xl font-black text-text-heading leading-tight">
+            Khách Hàng Nói Gì
+            <span className="block text-theme-accent">Về Alpha Works?</span>
+          </h2>
+          <p className="mt-4 text-text-body max-w-xl mx-auto text-sm md:text-base">
+            Hơn 180 đánh giá thực tế từ những người đã tin tưởng lựa chọn Alpha Works Flex 680.
+          </p>
+        </div>
+      </ScrollReveal>
 
-      <div className="bg-theme-box rounded-3xl p-6 md:p-8 shadow-md border border-theme-accent/10 mb-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div className="flex flex-col items-center md:items-start gap-2">
-            <div className="text-7xl font-black text-text-heading leading-none">4.8</div>
-            <div className="flex items-center gap-1 text-amber-400 text-xl">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <FontAwesomeIcon key={s} icon={s <= 4 ? faStar : faStarHalfStroke} />
+      <ScrollReveal direction="up" delay={0.2}>
+        <div className="bg-theme-box rounded-3xl p-6 md:p-8 shadow-md border border-theme-accent/10 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="flex flex-col items-center md:items-start gap-2">
+              <div className="text-7xl font-black text-text-heading leading-none">4.8</div>
+              <div className="flex items-center gap-1 text-amber-400 text-xl">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <FontAwesomeIcon key={s} icon={s <= 4 ? faStar : faStarHalfStroke} />
+                ))}
+              </div>
+              <p className="text-text-body text-sm">Dựa trên 184 đánh giá</p>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              {ratingBreakdown.map((row) => (
+                <div key={row.stars} className="flex items-center gap-3">
+                  <span className="text-text-body text-xs w-8 shrink-0">{row.stars}★</span>
+                  <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-amber-400 rounded-full transition-all"
+                      style={{ width: `${row.percent}%` }}
+                    />
+                  </div>
+                  <span className="text-text-body text-xs w-8 text-right shrink-0">{row.count}</span>
+                </div>
               ))}
             </div>
-            <p className="text-text-body text-sm">Dựa trên 184 đánh giá</p>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            {ratingBreakdown.map((row) => (
-              <div key={row.stars} className="flex items-center gap-3">
-                <span className="text-text-body text-xs w-8 shrink-0">{row.stars}★</span>
-                <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-amber-400 rounded-full transition-all"
-                    style={{ width: `${row.percent}%` }}
-                  />
-                </div>
-                <span className="text-text-body text-xs w-8 text-right shrink-0">{row.count}</span>
-              </div>
-            ))}
           </div>
         </div>
-      </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {reviews.map((review) => (
-          <ReviewCard
-            key={review.id}
-            review={review}
-            onLike={handleLike}
-            likedIds={likedIds}
-          />
+        {reviews.map((review, index) => (
+          <ScrollReveal key={review.id} direction="up" delay={0.1 * (index % 3)}>
+            <ReviewCard
+              review={review}
+              onLike={handleLike}
+              likedIds={likedIds}
+            />
+          </ScrollReveal>
         ))}
       </div>
     </section>

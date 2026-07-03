@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ScrollReveal from "../../ScrollReveal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPowerOff,
@@ -74,21 +75,23 @@ const noteIconStyle = {
 export default function UsageGuide() {
   return (
     <section>
-      <div className="text-center mb-12">
-        <span className="inline-block text-theme-accent text-sm font-semibold uppercase tracking-[0.25em] mb-3">
-          Hướng Dẫn Sử Dụng
-        </span>
-        <h2 className="text-3xl md:text-4xl font-black text-text-heading leading-tight">
-          Bắt Đầu Chỉ Với
-          <span className="block text-theme-accent">4 Bước Đơn Giản</span>
-        </h2>
-        <p className="mt-4 text-text-body max-w-xl mx-auto text-sm md:text-base">
-          Thiết lập nhanh trong vài phút — và đắm mình vào thế giới âm nhạc tuyệt vời ngay lập tức.
-        </p>
-      </div>
+      <ScrollReveal direction="up" delay={0.1}>
+        <div className="text-center mb-12">
+          <span className="inline-block text-theme-accent text-sm font-semibold uppercase tracking-[0.25em] mb-3">
+            Hướng Dẫn Sử Dụng
+          </span>
+          <h2 className="text-3xl md:text-4xl font-black text-text-heading leading-tight">
+            Bắt Đầu Chỉ Với
+            <span className="block text-theme-accent">4 Bước Đơn Giản</span>
+          </h2>
+          <p className="mt-4 text-text-body max-w-xl mx-auto text-sm md:text-base">
+            Thiết lập nhanh trong vài phút — và đắm mình vào thế giới âm nhạc tuyệt vời ngay lập tức.
+          </p>
+        </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-        <div className="flex flex-col gap-5">
+        <ScrollReveal direction="right" delay={0.2} className="flex flex-col gap-5">
           {steps.map((item, index) => (
             <div
               key={index}
@@ -113,16 +116,17 @@ export default function UsageGuide() {
               </div>
             </div>
           ))}
-        </div>
+        </ScrollReveal>
 
-        <div className="flex flex-col gap-6">
-          <div className="relative rounded-3xl overflow-hidden shadow-xl border border-theme-accent/10">
+        <ScrollReveal direction="left" delay={0.3} className="flex flex-col gap-6">
+          <div className="relative rounded-3xl overflow-hidden shadow-xl border border-theme-accent/10 group cursor-pointer">
+            <div className="absolute inset-0 bg-slate-200 dark:bg-slate-800 animate-pulse group-hover:animate-none" />
             <Image
               src="/images/241030043902-tn-aw-flex-6809.webp"
               alt="Trải nghiệm nghe nhạc cùng Alpha Works Flex 680"
               width={600}
               height={600}
-              className="w-full h-auto object-cover"
+              className="w-full h-auto object-cover relative z-10 transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
             <div className="absolute bottom-5 left-5 right-5">
@@ -153,7 +157,7 @@ export default function UsageGuide() {
               </div>
             ))}
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );
