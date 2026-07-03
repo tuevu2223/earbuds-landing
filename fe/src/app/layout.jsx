@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
+import ChatbotWidget from "./components/ChatbotWidget";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col font-sans">
         <Header />
         {children}
+        <ChatbotWidget />
       </body>
     </html>
   );
