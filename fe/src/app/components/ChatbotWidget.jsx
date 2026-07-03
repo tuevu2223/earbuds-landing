@@ -22,7 +22,6 @@ export default function ChatbotWidget() {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // Auto scroll to bottom when new messages arrive
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -33,31 +32,47 @@ export default function ChatbotWidget() {
     }
   }, [messages, isOpen]);
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
     if (!inputText.trim()) return;
 
-    // Add User Message
     const newUserMsg = { id: Date.now(), sender: "user", text: inputText };
     setMessages((prev) => [...prev, newUserMsg]);
+    const currentInputText = inputText;
     setInputText("");
     setIsTyping(true);
 
-    // Simulate Bot Auto-Response
-    setTimeout(() => {
+    try {
+      const response = await fetch("http://localhost:5000/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: currentInputText }),
+      });
+
+      const data = await response.json();
+
       const botResponse = {
         id: Date.now() + 1,
         sender: "bot",
-        text: "Cảm ơn câu hỏi của bạn. Hệ thống AI đang được nâng cấp, vui lòng để lại số điện thoại hoặc email, nhân viên tư vấn sẽ liên hệ lại ngay nhé!",
+        text: data.response || "Đã có lỗi xảy ra khi kết nối máy chủ.",
       };
       setMessages((prev) => [...prev, botResponse]);
+    } catch (error) {
+      const botResponse = {
+        id: Date.now() + 1,
+        sender: "bot",
+        text: "Xin lỗi, không thể kết nối tới máy chủ.",
+      };
+      setMessages((prev) => [...prev, botResponse]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-      {/* Chat Window */}
       <div
         className={`mb-4 w-[340px] sm:w-[380px] bg-theme-box/95 backdrop-blur-xl border border-theme-accent/20 rounded-3xl shadow-2xl overflow-hidden origin-bottom-right transition-all duration-300 ${
           isOpen
@@ -65,7 +80,6 @@ export default function ChatbotWidget() {
             : "scale-90 opacity-0 translate-y-10 pointer-events-none"
         }`}
       >
-        {/* Header */}
         <div className="bg-gradient-to-r from-cyan-600 to-blue-600 p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-white backdrop-blur-sm border border-white/30">
@@ -87,7 +101,6 @@ export default function ChatbotWidget() {
           </button>
         </div>
 
-        {/* Chat Body */}
         <div className="h-[350px] p-4 overflow-y-auto flex flex-col gap-4 bg-slate-50/50 dark:bg-slate-900/50 scrollbar-thin scrollbar-thumb-theme-accent/30 scrollbar-track-transparent">
           {messages.map((msg) => (
             <div
@@ -120,7 +133,6 @@ export default function ChatbotWidget() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input Area */}
         <form
           onSubmit={handleSend}
           className="p-3 bg-theme-box border-t border-theme-accent/10 flex items-center gap-2"
@@ -142,7 +154,6 @@ export default function ChatbotWidget() {
         </form>
       </div>
 
-      {/* Floating Action Button (FAB) */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`relative flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-cyan-600 to-blue-600 rounded-full text-white text-2xl shadow-lg hover:shadow-cyan-500/40 hover:-translate-y-1 transition-all duration-300 ${
@@ -150,7 +161,6 @@ export default function ChatbotWidget() {
         }`}
       >
         <FontAwesomeIcon icon={faCommentDots} />
-        {/* Notification badge */}
         <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-red-500 border-2 border-theme-bg-main rounded-full"></span>
       </button>
     </div>
