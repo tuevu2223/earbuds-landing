@@ -1,5 +1,6 @@
 import { faTruckFast, faSackDollar, faHeadset, faBoxOpen } from "@fortawesome/free-solid-svg-icons";
 import TrustCard from "./TrustCard";
+import ScrollReveal from "../../ScrollReveal";
 
 export default function TrustSection() {
   const trustItems = [
@@ -28,12 +29,13 @@ export default function TrustSection() {
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {trustItems.map((item, index) => (
-        <TrustCard
-          key={index}
-          icon={item.icon}
-          title={item.title}
-          description={item.description}
-        />
+        <ScrollReveal key={index} direction="up" delay={0.1 * index}>
+          <TrustCard
+            icon={item.icon}
+            title={item.title}
+            description={item.description}
+          />
+        </ScrollReveal>
       ))}
     </section>
   );
