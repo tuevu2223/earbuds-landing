@@ -110,12 +110,12 @@ export default function ProductIntroduction() {
             </div>
 
             <div className="absolute top-4 right-4 bg-theme-accent text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
-              NEW 2024
+              NEW 2026
             </div>
 
             <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-2xl px-3 py-2 shadow-md border border-theme-accent/10 flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0" />
-              <span className="text-text-heading text-xs font-semibold">Còn hàng — Giao ngay hôm nay</span>
+              <span className="text-green-600 dark:text-green-400 text-xs font-semibold">Còn hàng — Giao ngay hôm nay</span>
             </div>
           </div>
         </ScrollReveal>
@@ -174,7 +174,7 @@ export default function ProductIntroduction() {
                     id={`color-option-${color.value}`}
                     onClick={() => setSelectedColor(color)}
                     title={color.label}
-                    className={`relative w-8 h-8 rounded-full border-2 transition-all duration-200 ${
+                    className={`relative w-8 h-8 rounded-full border-2 transition-all duration-200 cursor-pointer ${
                       selectedColor.value === color.value
                         ? "border-theme-accent scale-110 shadow-lg"
                         : "border-slate-300 dark:border-slate-600 hover:scale-105"
@@ -204,7 +204,7 @@ export default function ProductIntroduction() {
                   id="product-decrease-qty"
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-600 flex items-center justify-center text-text-body hover:border-theme-accent hover:text-theme-accent transition-all duration-200"
+                  className="w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-600 flex items-center justify-center text-text-body hover:border-theme-accent hover:text-theme-accent transition-all duration-200 cursor-pointer"
                 >
                   <FontAwesomeIcon icon={faMinus} className="text-xs" />
                 </motion.button>
@@ -215,7 +215,7 @@ export default function ProductIntroduction() {
                   id="product-increase-qty"
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setQuantity((q) => q + 1)}
-                  className="w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-600 flex items-center justify-center text-text-body hover:border-theme-accent hover:text-theme-accent transition-all duration-200"
+                  className="w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-600 flex items-center justify-center text-text-body hover:border-theme-accent hover:text-theme-accent transition-all duration-200 cursor-pointer"
                 >
                   <FontAwesomeIcon icon={faPlus} className="text-xs" />
                 </motion.button>
@@ -229,7 +229,7 @@ export default function ProductIntroduction() {
                 whileTap={{ scale: 0.97 }}
                 onClick={handleAddToCart}
                 disabled={addedFeedback}
-                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-black text-sm transition-all duration-300 shadow-md overflow-hidden relative"
+                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-black text-sm transition-all duration-300 shadow-md overflow-hidden relative cursor-pointer"
                 style={{
                   background: addedFeedback
                     ? "var(--theme-accent)"
