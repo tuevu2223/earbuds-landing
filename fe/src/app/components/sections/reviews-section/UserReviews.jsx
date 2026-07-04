@@ -118,7 +118,7 @@ function StarRating({ rating }) {
 function ReviewCard({ review, onLike, likedIds }) {
   const liked = likedIds.has(review.id);
   return (
-    <div className="bg-theme-box rounded-2xl p-5 shadow-md border border-theme-accent/10 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex flex-col gap-4">
+    <div className="h-full bg-theme-box rounded-2xl p-5 shadow-md border border-theme-accent/10 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex flex-col gap-4">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           <div
@@ -144,7 +144,7 @@ function ReviewCard({ review, onLike, likedIds }) {
 
       <button
         onClick={() => onLike(review.id)}
-        className={`self-start flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full border transition-all duration-200 ${
+        className={`self-start flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full border transition-all duration-200 cursor-pointer ${
           liked
             ? "bg-theme-accent text-white border-theme-accent"
             : "text-text-body border-slate-200 hover:border-theme-accent hover:text-theme-accent"

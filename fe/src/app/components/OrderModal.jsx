@@ -23,8 +23,28 @@ export default function OrderModal() {
   const [visible, setVisible] = useState(false);
   const [animating, setAnimating] = useState(false);
   const [formData, setFormData] = useState({ name: "", phone: "" });
+  const [errors, setErrors] = useState({ name: "", phone: "" });
   const [timeLeft, setTimeLeft] = useState(COUNTDOWN_HOURS * 3600);
   const overlayRef = useRef(null);
+
+  const validatePhone = (value) => {
+    const phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
+    return phoneRegex.test(value);
+  };
+
+  const handleNameChange = (e) => {
+    const val = e.target.value;
+    setFormData((prev) => ({ ...prev, name: val }));
+    if (!val.trim()) setErrors((prev) => ({ ...prev, name: "Vui lòng nhập tên của bạn" }));
+    else setErrors((prev) => ({ ...prev, name: "" }));
+  };
+
+  const handlePhoneChange = (e) => {
+    const val = e.target.value;
+    setFormData((prev) => ({ ...prev, phone: val }));
+    if (!validatePhone(val)) setErrors((prev) => ({ ...prev, phone: "Số điện thoại không hợp lệ" }));
+    else setErrors((prev) => ({ ...prev, phone: "" }));
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -57,6 +77,16 @@ export default function OrderModal() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const isNameValid = formData.name.trim().length > 0;
+    const isPhoneValid = validatePhone(formData.phone);
+
+    if (!isNameValid || !isPhoneValid) {
+      setErrors({
+        name: !isNameValid ? "Vui lòng nhập tên của bạn" : "",
+        phone: !isPhoneValid ? "Số điện thoại không hợp lệ" : "",
+      });
+      return;
+    }
     alert(`Đặt hàng thành công!\nTên: ${formData.name}\nSĐT: ${formData.phone}`);
     closeModal();
   };
@@ -78,7 +108,7 @@ export default function OrderModal() {
       >
         <button
           onClick={closeModal}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 hover:text-slate-800 transition-colors cursor-pointer"
         >
           <FontAwesomeIcon icon={faXmark} />
         </button>
@@ -111,37 +141,47 @@ export default function OrderModal() {
           </div>
 
           <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3">
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                <FontAwesomeIcon icon={faUser} />
-              </span>
-              <input
-                type="text"
-                placeholder="Tên của bạn"
-                required
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-sm outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
-              />
+            <div className="flex flex-col gap-1 text-left">
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                  <FontAwesomeIcon icon={faUser} />
+                </span>
+                <input
+                  type="text"
+                  placeholder="Tên của bạn"
+                  required
+                  value={formData.name}
+                  onChange={handleNameChange}
+                  className={`w-full pl-10 pr-4 py-3 rounded-xl border bg-slate-50 text-slate-800 text-sm outline-none focus:ring-2 transition-all ${
+                    errors.name ? "border-red-400 focus:ring-red-400" : "border-slate-200 focus:ring-cyan-400 focus:border-transparent"
+                  }`}
+                />
+              </div>
+              {errors.name && <span className="text-red-500 text-[11px] font-medium pl-2">{errors.name}</span>}
             </div>
 
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-                <FontAwesomeIcon icon={faPhone} />
-              </span>
-              <input
-                type="tel"
-                placeholder="Số điện thoại"
-                required
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-sm outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
-              />
+            <div className="flex flex-col gap-1 text-left">
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                  <FontAwesomeIcon icon={faPhone} />
+                </span>
+                <input
+                  type="tel"
+                  placeholder="Số điện thoại"
+                  required
+                  value={formData.phone}
+                  onChange={handlePhoneChange}
+                  className={`w-full pl-10 pr-4 py-3 rounded-xl border bg-slate-50 text-slate-800 text-sm outline-none focus:ring-2 transition-all ${
+                    errors.phone ? "border-red-400 focus:ring-red-400" : "border-slate-200 focus:ring-cyan-400 focus:border-transparent"
+                  }`}
+                />
+              </div>
+              {errors.phone && <span className="text-red-500 text-[11px] font-medium pl-2">{errors.phone}</span>}
             </div>
 
             <button
               type="submit"
-              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-black uppercase tracking-wider shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-[1.02] transition-all duration-200 mt-1"
+              className="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-black uppercase tracking-wider shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-[1.02] transition-all duration-200 mt-1 cursor-pointer"
             >
               Đăng Ký Ngay
             </button>
