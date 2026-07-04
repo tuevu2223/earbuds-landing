@@ -10,43 +10,11 @@ const PORT = process.env.PORT || 5000;
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-const chunks = [];
-let embedder;
+// Đọc toàn bộ file kiến thức một lần duy nhất khi khởi động
+const knowledgePath = path.join(__dirname, 'knowledge.txt');
+const knowledgeData = fs.readFileSync(knowledgePath, 'utf8');
 
-function cosineSimilarity(vecA, vecB) {
-  let dotProduct = 0;
-  let normA = 0;
-  let normB = 0;
-  for (let i = 0; i < vecA.length; i++) {
-    dotProduct += vecA[i] * vecB[i];
-    normA += vecA[i] * vecA[i];
-    normB += vecB[i] * vecB[i];
-  }
-  if (normA === 0 || normB === 0) return 0;
-  return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-}
-
-async function initRAG() {
-  try {
-    const { pipeline, env } = await import('@xenova/transformers');
-    env.cacheDir = path.join(__dirname, '.cache');
-    embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
-
-    const knowledgePath = path.join(__dirname, 'knowledge.txt');
-    const text = fs.readFileSync(knowledgePath, 'utf8');
-    const paragraphs = text.split('\n\n').filter(p => p.trim().length > 0);
-    
-    for (const p of paragraphs) {
-      const output = await embedder(p, { pooling: 'mean', normalize: true });
-      chunks.push({
-        text: p,
-        vector: Array.from(output.data)
-      });
-    }
-  } catch (err) {
-    console.error(err);
-  }
-}
+const systemPrompt = `Bạn là nhân viên tư vấn bán hàng của Alpha Works. Hãy trả lời ngắn gọn và chính xác dựa trên thông tin cốt lõi sau:\n\n${knowledgeData}\n\nQuy tắc phục vụ:\n- Luôn xưng hô "Dạ, bên em..." hoặc "Dạ, sản phẩm này...".\n- Nếu khách hỏi giá hoặc khuyến mãi, hãy đáp: "Dạ, hiện tại dòng tai nghe Alpha Works đang có chương trình ưu đãi giá cực tốt kèm quà tặng đặc biệt riêng trong hôm nay. Anh/Chị vui lòng để lại Số Điện Thoại, nhân viên tư vấn bên em sẽ liên hệ gửi bảng giá ưu đãi mới nhất cho mình ngay ạ!"\n- KHÔNG bịa đặt thông tin ngoài tài liệu.`;
 
 app.use(cors());
 app.use(express.json());
@@ -57,24 +25,7 @@ app.post('/api/chat', async (req, res) => {
     return res.status(400).json({ error: 'Message is required' });
   }
 
-  if (!embedder) {
-    return res.status(503).json({ error: 'Hệ thống đang khởi động bộ máy AI cục bộ, vui lòng thử lại sau vài giây...' });
-  }
-
   try {
-    const output = await embedder(message, { pooling: 'mean', normalize: true });
-    const messageVector = Array.from(output.data);
-
-    const scoredChunks = chunks.map(chunk => ({
-      text: chunk.text,
-      score: cosineSimilarity(messageVector, chunk.vector)
-    }));
-
-    scoredChunks.sort((a, b) => b.score - a.score);
-    const topChunks = scoredChunks.slice(0, 3).map(c => c.text).join('\n\n');
-
-    const systemPrompt = `Bạn là nhân viên tư vấn bán hàng của Alpha Works. Hãy trả lời ngắn gọn và chính xác dựa trên thông tin sau:\n\n${topChunks}\n\nQuy tắc phục vụ:\n- Luôn xưng hô "Dạ, bên em..." hoặc "Dạ, sản phẩm này...".\n- Nếu khách hỏi giá hoặc khuyến mãi, hãy đáp: "Dạ, hiện tại dòng tai nghe Alpha Works đang có chương trình ưu đãi giá cực tốt kèm quà tặng đặc biệt riêng trong hôm nay. Anh/Chị vui lòng để lại Số Điện Thoại, nhân viên tư vấn bên em sẽ liên hệ gửi bảng giá ưu đãi mới nhất cho mình ngay ạ!"\n- KHÔNG bịa đặt thông tin ngoài tài liệu.`;
-
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: message,
@@ -83,10 +34,8 @@ app.post('/api/chat', async (req, res) => {
       }
     });
     
-    const text = response.text;
-
     res.json({
-      response: text
+      response: response.text
     });
   } catch (error) {
     console.error(error);
@@ -94,9 +43,7 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-initRAG().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Backend server is running on http://localhost:${PORT}`);
-    console.log(`[RAG] Local Embedder & Vector Store đã sẵn sàng!`);
-  });
+app.listen(PORT, () => {
+  console.log(`Backend server is running on http://localhost:${PORT}`);
+  console.log(`[AI] Context Loaded & Ready to Serve!`);
 });
