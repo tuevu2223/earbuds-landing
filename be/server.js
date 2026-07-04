@@ -1,15 +1,13 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const OpenAI = require('openai');
+const { GoogleGenAI } = require('@google/genai');
 const fs = require('fs');
 
 const app = express();
 const PORT = 5000;
 
-const openai = new OpenAI({
-  apiKey: "sk-464995033d08dce9-jnnuo1-0274eb51",
-  baseURL: "http://localhost:20128/v1"
-});
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const chunks = [];
 let embedder;
@@ -47,8 +45,6 @@ async function initRAG() {
   }
 }
 
-initRAG();
-
 app.use(cors());
 app.use(express.json());
 
@@ -56,6 +52,10 @@ app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
   if (!message) {
     return res.status(400).json({ error: 'Message is required' });
+  }
+
+  if (!embedder) {
+    return res.status(503).json({ error: 'Hệ thống đang khởi động bộ máy AI cục bộ, vui lòng thử lại sau vài giây...' });
   }
 
   try {
@@ -72,15 +72,15 @@ app.post('/api/chat', async (req, res) => {
 
     const systemPrompt = `Bạn là nhân viên tư vấn bán hàng của Alpha Works. Hãy trả lời ngắn gọn và chính xác dựa trên thông tin sau:\n\n${topChunks}\n\nQuy tắc phục vụ:\n- Luôn xưng hô "Dạ, bên em..." hoặc "Dạ, sản phẩm này...".\n- Nếu khách hỏi giá hoặc khuyến mãi, hãy đáp: "Dạ, hiện tại dòng tai nghe Alpha Works đang có chương trình ưu đãi giá cực tốt kèm quà tặng đặc biệt riêng trong hôm nay. Anh/Chị vui lòng để lại Số Điện Thoại, nhân viên tư vấn bên em sẽ liên hệ gửi bảng giá ưu đãi mới nhất cho mình ngay ạ!"\n- KHÔNG bịa đặt thông tin ngoài tài liệu.`;
 
-    const completion = await openai.chat.completions.create({
-      model: "ag/gemini-3-flash",
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: message }
-      ],
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: message,
+      config: {
+        systemInstruction: systemPrompt,
+      }
     });
     
-    const text = completion.choices[0].message.content;
+    const text = response.text;
 
     res.json({
       response: text
@@ -91,6 +91,9 @@ app.post('/api/chat', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend server is running on http://localhost:${PORT}`);
+initRAG().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Backend server is running on http://localhost:${PORT}`);
+    console.log(`[RAG] Local Embedder & Vector Store đã sẵn sàng!`);
+  });
 });
