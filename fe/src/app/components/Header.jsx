@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faXmark, faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faXmark, faSun, faMoon, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import useModalStore from "../store/useModalStore";
 import useDarkMode from "../hooks/useDarkMode";
+import useShopStore from "../store/useShopStore";
 
 const navItems = [
   { label: "Giới Thiệu", href: "#product-introduction" },
@@ -18,6 +19,8 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const openModal = useModalStore((state) => state.openModal);
   const { isDark, toggleDarkMode } = useDarkMode();
+  const { cart: cartItems, openCart } = useShopStore();
+  const totalQty = Array.isArray(cartItems) ? cartItems.reduce((s, i) => s + i.quantity, 0) : 0;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
@@ -102,6 +105,24 @@ export default function Header() {
             </button>
 
             <button
+              id="header-cart-btn"
+              onClick={openCart}
+              aria-label="Giỏ hàng"
+              className={`relative w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                isScrolled
+                  ? "text-text-body hover:bg-theme-accent/10 hover:text-theme-accent"
+                  : "text-white/80 hover:bg-white/10 hover:text-white"
+              }`}
+            >
+              <FontAwesomeIcon icon={faShoppingBag} className="text-base" />
+              {totalQty > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-theme-accent text-white text-[9px] font-black flex items-center justify-center">
+                  {totalQty}
+                </span>
+              )}
+            </button>
+
+            <button
               onClick={openModal}
               className="px-5 py-2 rounded-xl bg-theme-accent text-white text-sm font-bold shadow-md hover:opacity-90 hover:scale-[1.03] transition-all duration-200"
             >
@@ -118,6 +139,22 @@ export default function Header() {
               }`}
             >
               <FontAwesomeIcon icon={isDark ? faSun : faMoon} className="text-base" />
+            </button>
+
+            <button
+              id="header-cart-btn-mobile"
+              onClick={openCart}
+              aria-label="Giỏ hàng"
+              className={`relative w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
+                isScrolled ? "text-text-heading hover:bg-slate-100 dark:hover:bg-slate-700" : "text-white hover:bg-white/10"
+              }`}
+            >
+              <FontAwesomeIcon icon={faShoppingBag} className="text-base" />
+              {totalQty > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-theme-accent text-white text-[9px] font-black flex items-center justify-center">
+                  {totalQty}
+                </span>
+              )}
             </button>
 
             <button

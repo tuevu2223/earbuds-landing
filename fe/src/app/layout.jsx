@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import ChatbotWidget from "./components/ChatbotWidget";
+import MiniCartDrawer from "./components/MiniCartDrawer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -34,6 +35,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col font-sans">
         <Header />
         {children}
+        <MiniCartDrawer />
         <ChatbotWidget />
       </body>
     </html>
