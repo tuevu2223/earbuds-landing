@@ -28,7 +28,8 @@ function cosineSimilarity(vecA, vecB) {
 
 async function initRAG() {
   try {
-    const { pipeline } = await import('@xenova/transformers');
+    const { pipeline, env } = await import('@xenova/transformers');
+    env.cacheDir = path.join(__dirname, '.cache');
     embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
 
     const knowledgePath = path.join(__dirname, 'knowledge.txt');
