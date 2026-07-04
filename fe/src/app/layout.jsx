@@ -1,7 +1,12 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+config.autoAddCss = false;
+
 import Header from "./components/Header";
 import ChatbotWidget from "./components/ChatbotWidget";
+import MiniCartDrawer from "./components/MiniCartDrawer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -23,7 +28,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="vi" className={`${inter.variable} h-full antialiased`}>
+    <html lang="vi" className={`${inter.variable} h-full antialiased`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -34,6 +39,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-full flex flex-col font-sans">
         <Header />
         {children}
+        <MiniCartDrawer />
         <ChatbotWidget />
       </body>
     </html>

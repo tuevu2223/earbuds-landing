@@ -43,7 +43,8 @@ export default function ChatbotWidget() {
     setIsTyping(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/chat", {
+      // const response = await fetch("http://localhost:5000/api/chat", {
+      const response = await fetch("https://earbuds-landing.onrender.com/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,7 +96,7 @@ export default function ChatbotWidget() {
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
           >
             <FontAwesomeIcon icon={faXmark} />
           </button>
@@ -147,7 +148,7 @@ export default function ChatbotWidget() {
           <button
             type="submit"
             disabled={!inputText.trim() || isTyping}
-            className="w-10 h-10 rounded-xl bg-theme-accent text-white flex items-center justify-center shrink-0 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-cyan-600 transition-colors shadow-md"
+            className="w-10 h-10 rounded-xl bg-theme-accent text-white flex items-center justify-center shrink-0 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-cyan-600 transition-colors shadow-md cursor-pointer"
           >
             <FontAwesomeIcon icon={faPaperPlane} />
           </button>
@@ -156,7 +157,7 @@ export default function ChatbotWidget() {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`relative flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-cyan-600 to-blue-600 rounded-full text-white text-2xl shadow-lg hover:shadow-cyan-500/40 hover:-translate-y-1 transition-all duration-300 ${
+        className={`relative flex items-center justify-center w-14 h-14 bg-gradient-to-tr from-cyan-600 to-blue-600 rounded-full text-white text-2xl shadow-lg hover:shadow-cyan-500/40 hover:-translate-y-1 transition-all duration-300 cursor-pointer ${
           isOpen ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
         }`}
       >
