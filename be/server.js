@@ -3,9 +3,10 @@ const express = require('express');
 const cors = require('cors');
 const { GoogleGenAI } = require('@google/genai');
 const fs = require('fs');
+const path = require('path');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -30,7 +31,8 @@ async function initRAG() {
     const { pipeline } = await import('@xenova/transformers');
     embedder = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
 
-    const text = fs.readFileSync('knowledge.txt', 'utf8');
+    const knowledgePath = path.join(__dirname, 'knowledge.txt');
+    const text = fs.readFileSync(knowledgePath, 'utf8');
     const paragraphs = text.split('\n\n').filter(p => p.trim().length > 0);
     
     for (const p of paragraphs) {
